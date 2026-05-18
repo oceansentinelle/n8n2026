@@ -1,0 +1,305 @@
+{
+  "exported_at": "2026-05-18T22:02:05.776Z",
+  "source": "n8n-public-api",
+  "backup_type": "stable_single_workflow_file",
+  "workflow_id": "5E9EwaFxBUN1kaFG",
+  "workflow_name": "PILAT_002_Test_Retrieval_Doctrine",
+  "warning": "Workflow JSON backup. Credentials secrets are not stored here.",
+  "workflow": {
+    "updatedAt": "2026-05-18T10:24:28.052Z",
+    "createdAt": "2026-05-17T18:27:58.194Z",
+    "id": "5E9EwaFxBUN1kaFG",
+    "name": "PILAT_002_Test_Retrieval_Doctrine",
+    "description": null,
+    "active": false,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "ce7cd447-8e48-4503-a9dc-c78ecf6dc6f5",
+        "name": "TRG - Start Doctrine Retrieval Test"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "b75984c9-bea1-4e3a-bdc0-ff6fe85a2221",
+                "name": "test_question",
+                "value": "Pourquoi SCENARIO != MEASURED ?",
+                "type": "string"
+              },
+              {
+                "id": "9686ba42-af15-4853-a8e4-3f435d4f26fb",
+                "name": "collection_name",
+                "value": "pilat_validated_doctrine_v1",
+                "type": "string"
+              },
+              {
+                "id": "184947ab-c667-45f6-adda-8a20acbf06e2",
+                "name": "expected_source_status",
+                "value": "VALIDATED",
+                "type": "string"
+              },
+              {
+                "id": "ca0ae94b-22e6-42d4-8e08-6635179e33ab",
+                "name": "expected_validation",
+                "value": "retrieval_only",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          208,
+          0
+        ],
+        "id": "e3e9bd9e-8a2c-4a4c-b9e6-c02b2bb2cd21",
+        "name": "Edit Fields (Set)"
+      },
+      {
+        "parameters": {
+          "mode": "load",
+          "qdrantCollection": {
+            "__rl": true,
+            "value": "pilat_validated_doctrine_v1",
+            "mode": "list",
+            "cachedResultName": "pilat_validated_doctrine_v1"
+          },
+          "prompt": "={{ $json.test_question }}",
+          "topK": 5,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+        "typeVersion": 1.3,
+        "position": [
+          416,
+          0
+        ],
+        "id": "1fc097d9-07a7-4a4b-99f6-6c51bbbad1b4",
+        "name": "VDB - Retrieve PILAT Doctrine",
+        "credentials": {
+          "qdrantApi": {
+            "id": "AGu8ejbcdwxIs3ie",
+            "name": "Qdrant account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          512,
+          208
+        ],
+        "id": "3a727043-21aa-43ad-b64b-865dcec9ba8d",
+        "name": "Embeddings OpenAI",
+        "credentials": {
+          "openAiApi": {
+            "id": "MYYSf11WGCXxWv4r",
+            "name": "OpenAI PILAT Embeddings"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const items = $input.all();\n\nconst retrievedDocuments = items.map((item, index) => {\n  const document = item.json.document || {};\n  const metadata = document.metadata || {};\n  const pageContent = document.pageContent || \"\";\n  const score = item.json.score ?? null;\n\n  return {\n    rank: index + 1,\n    score,\n    chunk_id: metadata.chunk_id || null,\n    document_title: metadata.document_title || null,\n    section_path: metadata.section_path || null,\n    statut_document: metadata.statut_document || null,\n    validation: metadata.validation || null,\n    content: pageContent\n  };\n});\n\nreturn [\n  {\n    json: {\n      question: \"Pourquoi SCENARIO != MEASURED ?\",\n      retrieved_count: retrievedDocuments.length,\n      retrieved_documents: JSON.stringify(retrievedDocuments, null, 2),\n      decision_retrieval: retrievedDocuments.length > 0 ? \"GO\" : \"HOLD\"\n    }\n  }\n];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          768,
+          0
+        ],
+        "id": "c0c012c2-d9bd-40db-8e38-f1873c2c1d1a",
+        "name": "CODE - Validate Retrieved Doctrine"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=Question :\n{{ $json.question }}\n\nExtraits validés :\n{{ $json.retrieved_documents }}",
+          "messages": {
+            "messageValues": [
+              {
+                "type": "AIMessagePromptTemplate",
+                "message": "=Tu es PILAT, assistant doctrinal explicable.\n\nTu dois répondre uniquement à partir des extraits fournis.\nTu ne dois pas inventer de doctrine.\nTu dois distinguer clairement SCENARIO et MEASURED.\n\nSi les extraits ne suffisent pas, réponds exactement :\n“Je ne dispose pas d’un extrait validé suffisant dans la doctrine PILAT pour répondre avec certitude.”\n\nFormat attendu :\n\n1. Réponse courte\n2. Justification doctrinale\n3. Extraits utilisés\n4. Limites\n5. Décision GO/HOLD"
+              }
+            ]
+          },
+          "batching": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chainLlm",
+        "typeVersion": 1.9,
+        "position": [
+          976,
+          0
+        ],
+        "id": "22713969-4b28-4ac3-9db0-2b50683b16b8",
+        "name": "AI - Controlled PILAT Answer"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "id",
+            "value": "gpt-5-mini"
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          1056,
+          192
+        ],
+        "id": "8e20632e-a75f-413f-95de-94a085ee35d1",
+        "name": "MODEL - OpenAI Controlled Answer",
+        "credentials": {
+          "openAiApi": {
+            "id": "MYYSf11WGCXxWv4r",
+            "name": "OpenAI PILAT Embeddings"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const item = $input.first().json;\n\nconst answer =\n  item.text ||\n  item.output ||\n  item.response ||\n  item.result ||\n  item.message ||\n  JSON.stringify(item);\n\nreturn [\n  {\n    json: {\n      status: \"GO\",\n      mode: \"controlled_qa\",\n      public_chatbot: false,\n      source_collection: \"pilat_validated_doctrine_v1\",\n      question: item.question || \"Pourquoi SCENARIO != MEASURED ?\",\n      answer,\n      doctrine_rule: \"SCENARIO != MEASURED\",\n      decision: \"GO for controlled QA review; HOLD public chatbot\",\n      next_action: \"Review the controlled answer, then test the next doctrine question.\"\n    }\n  }\n];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1328,
+          0
+        ],
+        "id": "1286c1fb-377f-4364-ae34-6d955bd10f09",
+        "name": "CODE - Format Controlled QA Response"
+      }
+    ],
+    "connections": {
+      "TRG - Start Doctrine Retrieval Test": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields (Set)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields (Set)": {
+        "main": [
+          [
+            {
+              "node": "VDB - Retrieve PILAT Doctrine",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Embeddings OpenAI": {
+        "ai_embedding": [
+          [
+            {
+              "node": "VDB - Retrieve PILAT Doctrine",
+              "type": "ai_embedding",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "VDB - Retrieve PILAT Doctrine": {
+        "main": [
+          [
+            {
+              "node": "CODE - Validate Retrieved Doctrine",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CODE - Validate Retrieved Doctrine": {
+        "main": [
+          [
+            {
+              "node": "AI - Controlled PILAT Answer",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "MODEL - OpenAI Controlled Answer": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI - Controlled PILAT Answer",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI - Controlled PILAT Answer": {
+        "main": [
+          [
+            {
+              "node": "CODE - Format Controlled QA Response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "binaryMode": "separate"
+    },
+    "staticData": null,
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
+    "pinData": {},
+    "versionId": "6603cef0-26a2-42f9-af6b-fb0d104fec72",
+    "activeVersionId": null,
+    "versionCounter": 60,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-05-17T18:27:58.196Z",
+        "createdAt": "2026-05-17T18:27:58.196Z",
+        "role": "workflow:owner",
+        "workflowId": "5E9EwaFxBUN1kaFG",
+        "projectId": "qlEaY3fnWiZ7Khw6",
+        "project": {
+          "updatedAt": "2026-05-18T12:36:49.449Z",
+          "createdAt": "2026-05-14T17:32:02.968Z",
+          "id": "qlEaY3fnWiZ7Khw6",
+          "name": "ale castro <oceansentinella@gmail.com>",
+          "type": "personal",
+          "icon": null,
+          "description": null,
+          "creatorId": "29b39541-7e2a-40bc-8c49-32c8cee71352"
+        }
+      }
+    ],
+    "tags": [],
+    "activeVersion": null
+  }
+}
