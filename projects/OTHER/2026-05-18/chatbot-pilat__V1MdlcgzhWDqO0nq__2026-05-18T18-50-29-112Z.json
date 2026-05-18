@@ -1,0 +1,364 @@
+{
+  "exported_at": "2026-05-18T18:50:29.112Z",
+  "source": "n8n-public-api",
+  "project_folder": "OTHER",
+  "workflow_id": "V1MdlcgzhWDqO0nq",
+  "workflow_name": "chatbot-pilat",
+  "backup_type": "single_workflow_backup",
+  "warning": "Workflow JSON backup. Credentials secrets are not stored here.",
+  "workflow": {
+    "updatedAt": "2026-05-17T18:24:58.089Z",
+    "createdAt": "2026-05-16T18:42:06.083Z",
+    "id": "V1MdlcgzhWDqO0nq",
+    "name": "chatbot-pilat",
+    "description": null,
+    "active": false,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -288,
+          -416
+        ],
+        "id": "b3091c1a-7441-4914-b271-2ba1bade9a02",
+        "name": "TRG - Start Validated Doctrine Ingestion"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "9e7a62c3-73cd-48ff-b945-da04298b082d",
+                "name": "source_file",
+                "value": "/home/node/.n8n-files/pilat/artifacts/validated/pilat_production_candidate_chunks.jsonl",
+                "type": "string"
+              },
+              {
+                "id": "0f54f7b9-1854-4907-8916-b75c64e3f90d",
+                "name": "required_statut",
+                "value": "VALIDATED",
+                "type": "string"
+              },
+              {
+                "id": "e856c71e-40ec-4e9f-bb0d-bdf35422f315",
+                "name": "required_validation",
+                "value": 30,
+                "type": "number"
+              },
+              {
+                "id": "320b89df-1497-4a8b-9fbf-c3656184eee8",
+                "name": "expected_validated_chunks",
+                "value": 30,
+                "type": "number"
+              },
+              {
+                "id": "99be4823-91f1-4514-8058-7c84761aab72",
+                "name": "forbidden_statuses",
+                "value": "[\"REVIEW\",\"DRAFT\",\"DEPRECATED\",\"ARCHIVED\"]",
+                "type": "array"
+              },
+              {
+                "id": "4700167e-45fd-4db0-9ac1-60100b520171",
+                "name": "decision_success",
+                "value": "GO : tests de questions/réponses contrôlées",
+                "type": "string"
+              },
+              {
+                "id": "b75e7f3d-d878-4759-9637-6e2d95d5ed95",
+                "name": "decision_failure",
+                "value": "HOLD : chatbot public",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -96,
+          -400
+        ],
+        "id": "47035020-11d2-4b14-9222-ca1337eb4872",
+        "name": "SET - Config PILAT"
+      },
+      {
+        "parameters": {
+          "fileSelector": "={{ $json.source_file }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.readWriteFile",
+        "typeVersion": 1.1,
+        "position": [
+          112,
+          -400
+        ],
+        "id": "8dc3a368-f218-4515-a6d9-0feef69328cb",
+        "name": "Read/Write Files from Disk"
+      },
+      {
+        "parameters": {
+          "operation": "text",
+          "destinationKey": "jsonl_raw",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1.1,
+        "position": [
+          304,
+          -384
+        ],
+        "id": "3b1f6e65-d892-46ec-bf9f-f6ad13ee0477",
+        "name": "EXTRACT - JSONL Text"
+      },
+      {
+        "parameters": {
+          "jsCode": "const EXPECTED_COUNT = 30;\n\nfunction getExtractedText(item) {\n  return (\n    item.json.jsonl_raw ||\n    item.json.data ||\n    item.json.text ||\n    item.json.content ||\n    ''\n  );\n}\n\nconst accepted = [];\nconst rejected = [];\n\nfor (const item of $input.all()) {\n  const raw = getExtractedText(item);\n\n  const lines = String(raw)\n    .split(/\\r?\\n/)\n    .map(line => line.trim())\n    .filter(Boolean);\n\n  for (const [lineIndex, line] of lines.entries()) {\n    let obj;\n\n    try {\n      obj = JSON.parse(line);\n    } catch (error) {\n      rejected.push({\n        line: lineIndex + 1,\n        reason: 'invalid_json',\n        preview: line.slice(0, 200)\n      });\n      continue;\n    }\n\n    const statut =\n      obj.statut ||\n      obj.statut_document ||\n      obj.metadata?.statut ||\n      obj.metadata?.statut_document;\n\n    const validation =\n      obj.validation ||\n      obj.metadata?.validation;\n\n    const content =\n      obj.contenu_chunk ||\n      obj.content ||\n      obj.text ||\n      obj.pageContent ||\n      '';\n\n    const chunkId =\n      obj.chunk_id ||\n      obj.metadata?.chunk_id ||\n      `pilat_chunk_${String(lineIndex + 1).padStart(4, '0')}`;\n\n    const forbiddenStatuses = new Set([\n      'REVIEW',\n      'DRAFT',\n      'DEPRECATED',\n      'ARCHIVED'\n    ]);\n\n    if (forbiddenStatuses.has(statut)) {\n      rejected.push({\n        chunk_id: chunkId,\n        statut,\n        validation,\n        reason: `forbidden_status_${statut}`\n      });\n      continue;\n    }\n\n    if (statut !== 'VALIDATED') {\n      rejected.push({\n        chunk_id: chunkId,\n        statut,\n        validation,\n        reason: 'not_validated'\n      });\n      continue;\n    }\n\n    if (!content || content.length < 10) {\n      rejected.push({\n        chunk_id: chunkId,\n        statut,\n        validation,\n        reason: 'empty_or_too_short_content'\n      });\n      continue;\n    }\n\n    accepted.push({\n      json: {\n        chunk_id: chunkId,\n        document_id: obj.document_id || 'pilat_doctrine',\n        source_file: obj.source_file || 'pilat_production_candidate_chunks.jsonl',\n        document_title: obj.document_title || '',\n        section_path: obj.section_path || '',\n        version: obj.version || '1.0.0',\n        statut_document: statut,\n        validation: validation || 'validé_humainement',\n        data_status: obj.data_status || 'DOCTRINE',\n        territoire: obj.territoire || 'non_specifie',\n        date_reference: obj.date_reference || '',\n        confidence_level: obj.confidence_level || 'élevé',\n        tags: obj.tags || ['pilat', 'validated', 'doctrine'],\n        word_count: obj.word_count || null,\n        content,\n        collection_name: 'pilat_validated_doctrine_v1',\n        ingestion_rule: 'validated_human_only',\n        index_ready: true\n      }\n    });\n  }\n}\n\nif (accepted.length !== EXPECTED_COUNT) {\n  throw new Error(\n    `HOLD: expected ${EXPECTED_COUNT} validated chunks, got ${accepted.length}. Rejected: ${rejected.length}. Details: ${JSON.stringify(rejected.slice(0, 10))}`\n  );\n}\n\nreturn accepted;"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          480,
+          -400
+        ],
+        "id": "51749447-eb3e-4d2e-a0b6-4d8c7ea6cb2a",
+        "name": "CODE - Strict Validation Filter"
+      },
+      {
+        "parameters": {
+          "jsCode": "const EXPECTED_COUNT = 30;\nconst REQUIRED_COLLECTION = 'pilat_validated_doctrine_v1';\n\nconst items = $input.all();\n\nconst summary = {\n  total_items: items.length,\n  validated: 0,\n  human_validated: 0,\n  index_ready: 0,\n  wrong_collection: 0,\n  invalid_items: []\n};\n\nfor (const [index, item] of items.entries()) {\n  const j = item.json;\n\n  const isValidated = j.statut_document === 'VALIDATED';\n  const isHumanValidated = j.validation === 'validé_humainement';\n  const isIndexReady = j.index_ready === true;\n  const isRightCollection = j.collection_name === REQUIRED_COLLECTION;\n\n  if (isValidated) summary.validated++;\n  if (isHumanValidated) summary.human_validated++;\n  if (isIndexReady) summary.index_ready++;\n  if (!isRightCollection) summary.wrong_collection++;\n\n  if (!isValidated || !isHumanValidated || !isIndexReady || !isRightCollection) {\n    summary.invalid_items.push({\n      index,\n      chunk_id: j.chunk_id,\n      statut_document: j.statut_document,\n      validation: j.validation,\n      index_ready: j.index_ready,\n      collection_name: j.collection_name\n    });\n  }\n}\n\nif (summary.total_items !== EXPECTED_COUNT) {\n  throw new Error(`HOLD: expected ${EXPECTED_COUNT} chunks, got ${summary.total_items}`);\n}\n\nif (summary.invalid_items.length > 0) {\n  throw new Error(\n    `HOLD: invalid chunks detected: ${JSON.stringify(summary.invalid_items.slice(0, 10))}`\n  );\n}\n\n// Important : on certifie, puis on laisse passer les 30 chunks\nreturn items.map(item => ({\n  json: {\n    ...item.json,\n    qa_decision: 'GO',\n    qa_message: 'QA passed — chunk validated for vector ingestion.',\n    qa_expected_count: EXPECTED_COUNT,\n    qa_total_items: summary.total_items,\n    qa_validated: summary.validated,\n    qa_human_validated: summary.human_validated,\n    qa_index_ready: summary.index_ready\n  }\n}));"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          688,
+          -400
+        ],
+        "id": "8d9cf60a-cd54-4c20-a81c-0df5d5e4a60e",
+        "name": "CODE - QA Count Validated Chunks"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d9fb0ade-b1c2-4608-9c79-fd875b9c3e6c",
+                "name": "pageContent",
+                "value": "={{ $json.content}}",
+                "type": "string"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1056,
+          -400
+        ],
+        "id": "a27bf687-2b24-47f1-b2f7-d0e3d4dc9a51",
+        "name": "SET - Prepare Vector Documents"
+      },
+      {
+        "parameters": {
+          "mode": "insert",
+          "qdrantCollection": {
+            "__rl": true,
+            "value": "pilat_validated_doctrine_v1",
+            "mode": "list",
+            "cachedResultName": "pilat_validated_doctrine_v1"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+        "typeVersion": 1.3,
+        "position": [
+          1328,
+          -400
+        ],
+        "id": "4a6274e8-96ae-4d42-8035-f74913f8d308",
+        "name": "VDB - Upsert PILAT Doctrine",
+        "credentials": {
+          "qdrantApi": {
+            "id": "AGu8ejbcdwxIs3ie",
+            "name": "Qdrant account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          1280,
+          -208
+        ],
+        "id": "0c7876fc-071b-4bf7-8a46-ec2cb1d761a5",
+        "name": "EMB - OpenAI Doctrine Embeddings",
+        "credentials": {
+          "openAiApi": {
+            "id": "MYYSf11WGCXxWv4r",
+            "name": "OpenAI PILAT Embeddings"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsonMode": "expressionData",
+          "jsonData": "={{ $json.pageContent }}",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+        "typeVersion": 1.1,
+        "position": [
+          1472,
+          -192
+        ],
+        "id": "35d64ca4-9fa2-4846-86f1-65f64f3e6d60",
+        "name": "Default Data Loader"
+      }
+    ],
+    "connections": {
+      "TRG - Start Validated Doctrine Ingestion": {
+        "main": [
+          [
+            {
+              "node": "SET - Config PILAT",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SET - Config PILAT": {
+        "main": [
+          [
+            {
+              "node": "Read/Write Files from Disk",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read/Write Files from Disk": {
+        "main": [
+          [
+            {
+              "node": "EXTRACT - JSONL Text",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "EXTRACT - JSONL Text": {
+        "main": [
+          [
+            {
+              "node": "CODE - Strict Validation Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CODE - Strict Validation Filter": {
+        "main": [
+          [
+            {
+              "node": "CODE - QA Count Validated Chunks",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CODE - QA Count Validated Chunks": {
+        "main": [
+          [
+            {
+              "node": "SET - Prepare Vector Documents",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SET - Prepare Vector Documents": {
+        "main": [
+          [
+            {
+              "node": "VDB - Upsert PILAT Doctrine",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "EMB - OpenAI Doctrine Embeddings": {
+        "ai_embedding": [
+          [
+            {
+              "node": "VDB - Upsert PILAT Doctrine",
+              "type": "ai_embedding",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Default Data Loader": {
+        "ai_document": [
+          [
+            {
+              "node": "VDB - Upsert PILAT Doctrine",
+              "type": "ai_document",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "binaryMode": "separate"
+    },
+    "staticData": null,
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
+    "pinData": {},
+    "versionId": "5d6aefc4-81d1-4650-a196-da1799b748f8",
+    "activeVersionId": null,
+    "versionCounter": 146,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-05-16T18:42:06.092Z",
+        "createdAt": "2026-05-16T18:42:06.092Z",
+        "role": "workflow:owner",
+        "workflowId": "V1MdlcgzhWDqO0nq",
+        "projectId": "qlEaY3fnWiZ7Khw6",
+        "project": {
+          "updatedAt": "2026-05-18T12:36:49.449Z",
+          "createdAt": "2026-05-14T17:32:02.968Z",
+          "id": "qlEaY3fnWiZ7Khw6",
+          "name": "ale castro <oceansentinella@gmail.com>",
+          "type": "personal",
+          "icon": null,
+          "description": null,
+          "creatorId": "29b39541-7e2a-40bc-8c49-32c8cee71352"
+        }
+      }
+    ],
+    "tags": [],
+    "activeVersion": null
+  }
+}
