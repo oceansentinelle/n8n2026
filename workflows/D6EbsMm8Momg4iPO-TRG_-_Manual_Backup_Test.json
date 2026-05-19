@@ -1,12 +1,12 @@
 {
-  "exported_at": "2026-05-19T09:17:51.498Z",
+  "exported_at": "2026-05-19T09:27:54.332Z",
   "source": "n8n-public-api",
   "backup_type": "stable_single_workflow_file",
   "workflow_id": "D6EbsMm8Momg4iPO",
   "workflow_name": "TRG - Manual Backup Test",
   "warning": "Workflow JSON backup. Credentials secrets are not stored here.",
   "workflow": {
-    "updatedAt": "2026-05-19T09:16:42.141Z",
+    "updatedAt": "2026-05-19T09:27:21.632Z",
     "createdAt": "2026-05-18T08:48:44.407Z",
     "id": "D6EbsMm8Momg4iPO",
     "name": "TRG - Manual Backup Test",
@@ -350,6 +350,39 @@
         ],
         "id": "5724b214-f24b-47c2-998b-6aec3dff5189",
         "name": "CODE - Normalize Manifest Lookup"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "f2c4f024-4baf-413f-aed2-2b48faada3d4",
+                "leftValue": "={{ $json.manifest_exists ? 1 : 0 }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          2016,
+          -192
+        ],
+        "id": "a6aa6605-2a5d-4f54-8887-e9d2cd018a51",
+        "name": "IF - Manifest Exists?"
       }
     ],
     "connections": {
@@ -520,6 +553,17 @@
             }
           ]
         ]
+      },
+      "CODE - Normalize Manifest Lookup": {
+        "main": [
+          [
+            {
+              "node": "IF - Manifest Exists?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "settings": {
@@ -531,9 +575,9 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "06e5bea1-2db1-41f4-8e08-fe87054720fc",
+    "versionId": "5cdd441c-1be6-4faa-9eb9-4a903f9a8c9b",
     "activeVersionId": null,
-    "versionCounter": 476,
+    "versionCounter": 491,
     "triggerCount": 0,
     "shared": [
       {
