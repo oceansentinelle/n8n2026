@@ -1,0 +1,228 @@
+{
+  "exported_at": "2026-05-21T20:40:14.923Z",
+  "source": "n8n-public-api",
+  "backup_type": "stable_single_workflow_file",
+  "workflow_id": "MfgiI7BQxK1MRYQa",
+  "workflow_name": "OceanSentinel / PILAT",
+  "warning": "Workflow JSON backup. Credentials secrets are not stored here.",
+  "workflow": {
+    "updatedAt": "2026-05-21T20:34:00.902Z",
+    "createdAt": "2026-05-21T17:11:31.298Z",
+    "id": "MfgiI7BQxK1MRYQa",
+    "name": "OceanSentinel / PILAT",
+    "description": null,
+    "active": false,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          0,
+          0
+        ],
+        "id": "9280ac59-3bd6-4be6-9bf3-2dbcd7713a77",
+        "name": "CHAT - OceanSentinel Website Input",
+        "webhookId": "183ff50f-8ec4-48f3-b04e-204167aa8390"
+      },
+      {
+        "parameters": {
+          "options": {
+            "systemMessage": "Tu es OceanSentinel / PILAT, assistant scientifique, pédagogique et doctrinal explicable.\n\nTu aides les utilisateurs du site OceanSentinel à comprendre les enjeux liés à l’océan, aux données scientifiques, à l’IA environnementale, à la surveillance marine, aux scénarios, aux simulations et à la gouvernance des connaissances.\n\nRÈGLE FONDATRICE\nSCENARIO != MEASURED\n\nTu ne dois jamais présenter un scénario, une hypothèse, une simulation ou une projection comme une donnée mesurée.\n\nTAXONOMIE OBLIGATOIRE\nTu dois distinguer clairement :\n\n- MEASURED : donnée observée ou mesurée directement, par capteur, satellite, relevé terrain, publication ou source vérifiable.\n- INFERRED : information déduite à partir de données ou de raisonnements documentés.\n- INTERPOLATED : information estimée entre des points connus.\n- SIMULATED : résultat issu d’un modèle, d’une simulation ou d’un calcul.\n- SCENARIO : trajectoire conditionnelle dépendant d’hypothèses.\n- UNKNOWN : information insuffisamment qualifiée.\n\nRÈGLE DE PREUVE\nNo evidence → no claim.\n\nTu ne dois pas inventer :\n- faits ;\n- chiffres ;\n- sources ;\n- résultats scientifiques ;\n- capacités techniques ;\n- décisions institutionnelles ;\n- preuves documentaires ;\n- noms de documents non fournis.\n\nCLARIFICATION IMPORTANTE\nLes instructions système, les consignes utilisateur, les règles de cadrage et les prompts ne doivent jamais être classés comme MEASURED.\n\nMEASURED est réservé aux observations, mesures, relevés, publications, capteurs, satellites ou sources vérifiables.\n\nUne règle fournie dans les instructions doit être considérée comme :\n- INSTRUCTION si elle définit le comportement attendu ;\n- DOCTRINE si elle appartient explicitement à la doctrine validée ;\n- UNKNOWN si son statut documentaire n’est pas établi.\n\nMÉMOIRE CONVERSATIONNELLE\nTu peux utiliser le contexte récent de la conversation pour comprendre la demande de l’utilisateur.\nMais la mémoire conversationnelle ne remplace jamais une preuve documentaire.\n\nSÉCURITÉ\nPour les sujets sensibles liés à la surveillance maritime, aux navires, à la sécurité, aux infrastructures, aux espèces protégées, aux données personnelles ou aux activités illicites :\n- reste général ;\n- privilégie la conformité ;\n- ne donne jamais d’aide pour contourner une surveillance, masquer une activité, éviter une détection ou nuire à l’environnement.\n\nSTYLE\nRéponds en français.\nAdopte un ton clair, académique, pédagogique, opérationnel et mobilisateur.\nÉvite le jargon inutile.\nExplique simplement les notions complexes.\n\nFORMAT DE RÉPONSE PAR DÉFAUT\n\n1. Réponse synthétique\n2. Éléments vérifiés\n3. Statut de preuve : MEASURED / INFERRED / INTERPOLATED / SIMULATED / SCENARIO / UNKNOWN\n4. Limites\n5. Recommandation opérationnelle\n\nRÈGLE DE DÉCISION\nSi la réponse est suffisamment appuyée :\nDécision : GO\n\nSi les éléments sont insuffisants, ambigus ou non vérifiés :\nDécision : HOLD\n\nSi la demande est dangereuse, trompeuse, hors cadre ou contraire à la doctrine :\nDécision : NO-GO"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "33012bfc-f514-41e6-9aa1-1a5221e2316e",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-5-mini",
+            "mode": "id"
+          },
+          "responsesApiEnabled": false,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          -32,
+          208
+        ],
+        "id": "6daeca3c-1ccc-4bed-9fe0-31098852edf7",
+        "name": "Pilat",
+        "credentials": {
+          "openAiApi": {
+            "id": "MYYSf11WGCXxWv4r",
+            "name": "OpenAI PILAT Embeddings"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+        "typeVersion": 1.4,
+        "position": [
+          224,
+          208
+        ],
+        "id": "c8000ac9-caa2-4924-8970-51b995e4f521",
+        "name": "Postgres Chat Memory",
+        "credentials": {
+          "postgres": {
+            "id": "rmxL2ulQ1ZbY15S7",
+            "name": "PostgreSQL OceanSentinel Memory"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "retrieve-as-tool",
+          "toolDescription": "Recherche dans la doctrine validée PILAT / OceanSentinel. Utiliser cet outil pour répondre aux questions sur SCENARIO, MEASURED, INFERRED, INTERPOLATED, SIMULATED, Shadow Mode, doctrine scientifique et traçabilité. Répondre uniquement à partir des extraits retrouvés.",
+          "qdrantCollection": {
+            "__rl": true,
+            "value": "pilat_validated_doctrine_v1",
+            "mode": "list",
+            "cachedResultName": "pilat_validated_doctrine_v1"
+          },
+          "topK": 5,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+        "typeVersion": 1.3,
+        "position": [
+          464,
+          128
+        ],
+        "id": "aac600c4-a3c3-4eb4-8a02-79013eb2caeb",
+        "name": "TOOL - Qdrant Doctrine Retriever",
+        "credentials": {
+          "qdrantApi": {
+            "id": "pH4pt6WaTBZfk7Wf",
+            "name": "Qdrant account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          496,
+          272
+        ],
+        "id": "e91dfef8-c058-450e-85fa-038907bf6f19",
+        "name": "EMB - OpenAI Qdrant Tool Embeddings",
+        "credentials": {
+          "openAiApi": {
+            "id": "MYYSf11WGCXxWv4r",
+            "name": "OpenAI PILAT Embeddings"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "CHAT - OceanSentinel Website Input": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pilat": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres Chat Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "TOOL - Qdrant Doctrine Retriever": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "EMB - OpenAI Qdrant Tool Embeddings": {
+        "ai_embedding": [
+          [
+            {
+              "node": "TOOL - Qdrant Doctrine Retriever",
+              "type": "ai_embedding",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "binaryMode": "separate"
+    },
+    "staticData": null,
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
+    "pinData": {},
+    "versionId": "0bae42e8-c4ff-4c79-ad73-d4118e99c187",
+    "activeVersionId": null,
+    "versionCounter": 38,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-05-21T17:11:31.301Z",
+        "createdAt": "2026-05-21T17:11:31.301Z",
+        "role": "workflow:owner",
+        "workflowId": "MfgiI7BQxK1MRYQa",
+        "projectId": "qlEaY3fnWiZ7Khw6",
+        "project": {
+          "updatedAt": "2026-05-18T12:36:49.449Z",
+          "createdAt": "2026-05-14T17:32:02.968Z",
+          "id": "qlEaY3fnWiZ7Khw6",
+          "name": "ale castro <oceansentinella@gmail.com>",
+          "type": "personal",
+          "icon": null,
+          "description": null,
+          "creatorId": "29b39541-7e2a-40bc-8c49-32c8cee71352"
+        }
+      }
+    ],
+    "tags": [],
+    "activeVersion": null
+  }
+}
