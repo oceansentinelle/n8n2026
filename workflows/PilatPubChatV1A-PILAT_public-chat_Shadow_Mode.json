@@ -1,0 +1,53 @@
+{
+  "exported_at": "2026-05-21T20:40:14.923Z",
+  "source": "n8n-public-api",
+  "backup_type": "stable_single_workflow_file",
+  "workflow_id": "PilatPubChatV1A",
+  "workflow_name": "PILAT public-chat Shadow Mode",
+  "warning": "Workflow JSON backup. Credentials secrets are not stored here.",
+  "workflow": {
+    "updatedAt": "2026-05-21T16:19:20.000Z",
+    "createdAt": "2026-05-20T23:43:00.847Z",
+    "id": "PilatPubChatV1A",
+    "name": "PILAT public-chat Shadow Mode",
+    "description": null,
+    "active": false,
+    "isArchived": true,
+    "nodes": [],
+    "connections": {},
+    "settings": {
+      "executionOrder": "v1",
+      "binaryMode": "separate"
+    },
+    "staticData": null,
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
+    "pinData": {},
+    "versionId": "541edc3a-0e50-40ad-80be-4acc21b913b0",
+    "activeVersionId": null,
+    "versionCounter": 8,
+    "triggerCount": 1,
+    "shared": [
+      {
+        "updatedAt": "2026-05-20T23:43:00.854Z",
+        "createdAt": "2026-05-20T23:43:00.854Z",
+        "role": "workflow:owner",
+        "workflowId": "PilatPubChatV1A",
+        "projectId": "qlEaY3fnWiZ7Khw6",
+        "project": {
+          "updatedAt": "2026-05-18T12:36:49.449Z",
+          "createdAt": "2026-05-14T17:32:02.968Z",
+          "id": "qlEaY3fnWiZ7Khw6",
+          "name": "ale castro <oceansentinella@gmail.com>",
+          "type": "personal",
+          "icon": null,
+          "description": null,
+          "creatorId": "29b39541-7e2a-40bc-8c49-32c8cee71352"
+        }
+      }
+    ],
+    "tags": [],
+    "activeVersion": null
+  }
+}
