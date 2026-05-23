@@ -1,0 +1,51 @@
+{
+  "exported_at": "2026-05-23T18:44:42.040Z",
+  "source": "n8n-public-api",
+  "backup_type": "stable_single_workflow_file",
+  "workflow_id": "V9z3uPxgXxztZR0o",
+  "workflow_name": "My workflow",
+  "warning": "Workflow JSON backup. Credentials secrets are not stored here.",
+  "workflow": {
+    "updatedAt": "2026-05-23T06:56:28.000Z",
+    "createdAt": "2026-05-23T06:54:19.075Z",
+    "id": "V9z3uPxgXxztZR0o",
+    "name": "My workflow",
+    "description": null,
+    "active": false,
+    "isArchived": true,
+    "nodes": [],
+    "connections": {},
+    "settings": {
+      "executionOrder": "v1",
+      "binaryMode": "separate"
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "5ac35aae-f1af-438c-9fe1-fead369c2b96",
+    "activeVersionId": null,
+    "versionCounter": 5,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-05-23T06:54:19.079Z",
+        "createdAt": "2026-05-23T06:54:19.079Z",
+        "role": "workflow:owner",
+        "workflowId": "V9z3uPxgXxztZR0o",
+        "projectId": "qlEaY3fnWiZ7Khw6",
+        "project": {
+          "updatedAt": "2026-05-18T12:36:49.449Z",
+          "createdAt": "2026-05-14T17:32:02.968Z",
+          "id": "qlEaY3fnWiZ7Khw6",
+          "name": "ale castro <oceansentinella@gmail.com>",
+          "type": "personal",
+          "icon": null,
+          "description": null,
+          "creatorId": "29b39541-7e2a-40bc-8c49-32c8cee71352"
+        }
+      }
+    ],
+    "tags": [],
+    "activeVersion": null
+  }
+}
