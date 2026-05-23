@@ -1,0 +1,1443 @@
+{
+  "exported_at": "2026-05-23T18:44:42.040Z",
+  "source": "n8n-public-api",
+  "backup_type": "stable_single_workflow_file",
+  "workflow_id": "MfgiI7BQxK1MRYQa",
+  "workflow_name": "v1.0.5 — Public Chat API JSON endpoint",
+  "warning": "Workflow JSON backup. Credentials secrets are not stored here.",
+  "workflow": {
+    "updatedAt": "2026-05-23T18:38:08.899Z",
+    "createdAt": "2026-05-21T17:11:31.298Z",
+    "id": "MfgiI7BQxK1MRYQa",
+    "name": "v1.0.5 — Public Chat API JSON endpoint",
+    "description": null,
+    "active": true,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "public": true,
+          "mode": "webhook",
+          "availableInChat": true,
+          "agentName": "Pilat",
+          "agentDescription": "PILAT est l’assistant conversationnel IA du projet OceanSentinel.\n\nIl fonctionne comme un assistant scientifique et documentaire basé sur une architecture RAG : il peut interroger une base de connaissances validée afin d’aider les visiteurs à comprendre les données, les scénarios, les simulations et les principes scientifiques du projet.\n\nPILAT n’est pas un système autonome de décision. Il agit comme un copilote de connaissance en mode supervisé, avec une règle fondamentale : ne jamais présenter un scénario, une hypothèse, une simulation ou une projection comme une donnée mesurée.\n\nIl distingue les statuts de preuve : MEASURED, INFERRED, INTERPOLATED, SIMULATED, SCENARIO et UNKNOWN.\n\nLorsque les informations disponibles sont insuffisantes, PILAT doit le signaler clairement au lieu d’inventer une réponse.",
+          "suggestedPrompts": {
+            "prompts": [
+              {
+                "text": "Quelle est la différence entre une donnée mesurée et un scénario ?"
+              },
+              {
+                "text": "Pourquoi un scénario ne doit-il pas être présenté comme une mesure ?"
+              },
+              {
+                "text": "Explique la doctrine OceanSentinel en langage simple."
+              },
+              {
+                "text": "Quelles sont les limites d’une réponse produite par PILAT ?"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          -624,
+          -2240
+        ],
+        "id": "9280ac59-3bd6-4be6-9bf3-2dbcd7713a77",
+        "name": "CHAT - OceanSentinel Website Input",
+        "webhookId": "183ff50f-8ec4-48f3-b04e-204167aa8390"
+      },
+      {
+        "parameters": {
+          "options": {
+            "systemMessage": "Tu es OceanSentinel / PILAT, assistant scientifique, pédagogique et doctrinal explicable.\n\nTu aides les utilisateurs du site OceanSentinel à comprendre les enjeux liés à l’océan, aux données scientifiques, à l’IA environnementale, à la surveillance marine, aux scénarios, aux simulations et à la gouvernance des connaissances.\n\nRÈGLE FONDATRICE\nSCENARIO != MEASURED\n\nTu ne dois jamais présenter un scénario, une hypothèse, une simulation ou une projection comme une donnée mesurée.\n\nTAXONOMIE OBLIGATOIRE\nTu dois distinguer clairement :\n\n- MEASURED : donnée observée ou mesurée directement, par capteur, satellite, relevé terrain, publication ou source vérifiable.\n- INFERRED : information déduite à partir de données ou de raisonnements documentés.\n- INTERPOLATED : information estimée entre des points connus.\n- SIMULATED : résultat issu d’un modèle, d’une simulation ou d’un calcul.\n- SCENARIO : trajectoire conditionnelle dépendant d’hypothèses.\n- UNKNOWN : information insuffisamment qualifiée.\n\nRÈGLE DE PREUVE\nNo evidence → no claim.\n\nTu ne dois pas inventer :\n- faits ;\n- chiffres ;\n- sources ;\n- résultats scientifiques ;\n- capacités techniques ;\n- décisions institutionnelles ;\n- preuves documentaires ;\n- noms de documents non fournis.\n\nCLARIFICATION IMPORTANTE\nLes instructions système, les consignes utilisateur, les règles de cadrage et les prompts ne doivent jamais être classés comme MEASURED.\n\nMEASURED est réservé aux observations, mesures, relevés, publications, capteurs, satellites ou sources vérifiables.\n\nUne règle fournie dans les instructions doit être considérée comme :\n- INSTRUCTION si elle définit le comportement attendu ;\n- DOCTRINE si elle appartient explicitement à la doctrine validée ;\n- UNKNOWN si son statut documentaire n’est pas établi.\n\nMÉMOIRE CONVERSATIONNELLE\nTu peux utiliser le contexte récent de la conversation pour comprendre la demande de l’utilisateur.\nMais la mémoire conversationnelle ne remplace jamais une preuve documentaire.\n\nSÉCURITÉ\nPour les sujets sensibles liés à la surveillance maritime, aux navires, à la sécurité, aux infrastructures, aux espèces protégées, aux données personnelles ou aux activités illicites :\n- reste général ;\n- privilégie la conformité ;\n- ne donne jamais d’aide pour contourner une surveillance, masquer une activité, éviter une détection ou nuire à l’environnement.\n\nSTYLE\nRéponds en français.\nAdopte un ton clair, académique, pédagogique, opérationnel et mobilisateur.\nÉvite le jargon inutile.\nExplique simplement les notions complexes.\n\nFORMAT DE RÉPONSE PAR DÉFAUT\n\n1. Réponse synthétique\n2. Éléments vérifiés\n3. Statut de preuve : MEASURED / INFERRED / INTERPOLATED / SIMULATED / SCENARIO / UNKNOWN\n4. Limites\n5. Recommandation opérationnelle\n\nRÈGLE DE DÉCISION\nSi la réponse est suffisamment appuyée :\nDécision : GO\n\nSi les éléments sont insuffisants, ambigus ou non vérifiés :\nDécision : HOLD\n\nSi la demande est dangereuse, trompeuse, hors cadre ou contraire à la doctrine :\nDécision : NO-GO"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          -272,
+          -2240
+        ],
+        "id": "33012bfc-f514-41e6-9aa1-1a5221e2316e",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-5-mini",
+            "mode": "id"
+          },
+          "responsesApiEnabled": false,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          -464,
+          -2064
+        ],
+        "id": "6daeca3c-1ccc-4bed-9fe0-31098852edf7",
+        "name": "Pilat",
+        "credentials": {
+          "openAiApi": {
+            "id": "MYYSf11WGCXxWv4r",
+            "name": "OpenAI PILAT Embeddings"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+        "typeVersion": 1.4,
+        "position": [
+          -320,
+          -2016
+        ],
+        "id": "c8000ac9-caa2-4924-8970-51b995e4f521",
+        "name": "Postgres Chat Memory",
+        "credentials": {
+          "postgres": {
+            "id": "rmxL2ulQ1ZbY15S7",
+            "name": "PostgreSQL OceanSentinel Memory"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "retrieve-as-tool",
+          "toolDescription": "Recherche dans la doctrine validée PILAT / OceanSentinel. Utiliser cet outil pour répondre aux questions sur SCENARIO, MEASURED, INFERRED, INTERPOLATED, SIMULATED, Shadow Mode, doctrine scientifique et traçabilité. Répondre uniquement à partir des extraits retrouvés.",
+          "qdrantCollection": {
+            "__rl": true,
+            "value": "pilat_validated_doctrine_v1",
+            "mode": "list",
+            "cachedResultName": "pilat_validated_doctrine_v1"
+          },
+          "topK": 5,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+        "typeVersion": 1.3,
+        "position": [
+          -160,
+          -2016
+        ],
+        "id": "aac600c4-a3c3-4eb4-8a02-79013eb2caeb",
+        "name": "TOOL - Qdrant Doctrine Retriever",
+        "credentials": {
+          "qdrantApi": {
+            "id": "pH4pt6WaTBZfk7Wf",
+            "name": "Qdrant account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          -96,
+          -1872
+        ],
+        "id": "e91dfef8-c058-450e-85fa-038907bf6f19",
+        "name": "EMB - OpenAI Qdrant Tool Embeddings",
+        "credentials": {
+          "openAiApi": {
+            "id": "MYYSf11WGCXxWv4r",
+            "name": "OpenAI PILAT Embeddings"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 7
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -704,
+          -1744
+        ],
+        "id": "6292951e-b9ad-43b2-87d9-5553e75366fc",
+        "name": "TRG - Daily Chat History Report"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT\n  column_name,\n  data_type,\n  is_nullable\nFROM information_schema.columns\nWHERE table_schema = 'public'\n  AND table_name = 'n8n_chat_histories'\nORDER BY ordinal_position;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -512,
+          -1680
+        ],
+        "id": "7f20e05e-96f6-48ae-82e9-f866b338985f",
+        "name": "DB - Inspect Chat Memory Table",
+        "credentials": {
+          "postgres": {
+            "id": "rmxL2ulQ1ZbY15S7",
+            "name": "PostgreSQL OceanSentinel Memory"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT\n  id,\n  session_id,\n  message ->> 'type' AS role,\n  COALESCE(\n    message #>> '{data,content}',\n    message ->> 'content',\n    message::text\n  ) AS content,\n  message::text AS raw_message\nFROM n8n_chat_histories\nORDER BY id DESC\nLIMIT 100;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -304,
+          -1744
+        ],
+        "id": "dae9a0c3-9219-426d-b1b4-f11bb6ce5c26",
+        "name": "DB - Read Chat History",
+        "credentials": {
+          "postgres": {
+            "id": "rmxL2ulQ1ZbY15S7",
+            "name": "PostgreSQL OceanSentinel Memory"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const items = $input.all();\n\nconst rows = items.map((item) => item.json);\n\nconst totalMessages = rows.length;\nconst sessions = new Set(rows.map(r => r.session_id).filter(Boolean));\n\nconst humanMessages = rows.filter(r =>\n  String(r.role || \"\").toLowerCase().includes(\"human\")\n);\n\nconst aiMessages = rows.filter(r =>\n  String(r.role || \"\").toLowerCase().includes(\"ai\")\n);\n\nfunction escapeHtml(value) {\n  return String(value ?? \"\")\n    .replace(/&/g, \"&amp;\")\n    .replace(/</g, \"&lt;\")\n    .replace(/>/g, \"&gt;\")\n    .replace(/\"/g, \"&quot;\");\n}\n\nconst tableRows = rows.map(row => `\n  <tr>\n    <td>${escapeHtml(row.id)}</td>\n    <td>${escapeHtml(row.session_id)}</td>\n    <td>${escapeHtml(row.role)}</td>\n    <td>${escapeHtml(row.content).slice(0, 1000)}</td>\n  </tr>\n`).join(\"\");\n\nconst html = `\n<h2>Rapport OceanSentinel — Historique du chatbot</h2>\n\n<h3>Résumé</h3>\n<ul>\n  <li>Total messages : ${totalMessages}</li>\n  <li>Sessions distinctes : ${sessions.size}</li>\n  <li>Messages utilisateur : ${humanMessages.length}</li>\n  <li>Messages assistant : ${aiMessages.length}</li>\n</ul>\n\n<h3>Derniers messages</h3>\n<table border=\"1\" cellpadding=\"6\" cellspacing=\"0\" style=\"border-collapse:collapse;width:100%;\">\n  <thead>\n    <tr>\n      <th>ID</th>\n      <th>Session</th>\n      <th>Rôle</th>\n      <th>Contenu</th>\n    </tr>\n  </thead>\n  <tbody>\n    ${tableRows || \"<tr><td colspan='4'>Aucun message trouvé.</td></tr>\"}\n  </tbody>\n</table>\n\n<p><strong>Décision :</strong> GO — rapport généré depuis PostgreSQL.</p>\n`;\n\nreturn [\n  {\n    json: {\n      status: \"GO\",\n      report_type: \"chat_history_html\",\n      total_messages: totalMessages,\n      total_sessions: sessions.size,\n      human_messages: humanMessages.length,\n      ai_messages: aiMessages.length,\n      html_report: html,\n      decision: \"GO — HTML chat history report generated.\"\n    }\n  }\n];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -80,
+          -1664
+        ],
+        "id": "ab0cb31d-154c-4406-9711-dec2994fd4c7",
+        "name": "CODE - Build HTML Chat Report"
+      },
+      {
+        "parameters": {
+          "fromEmail": "admin@oceansentinelle.org",
+          "toEmail": "admin@oceansentinelle.org",
+          "subject": "Rapport OceanSentinel — Historique chatbot",
+          "html": "={{ $json.html_report }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2.1,
+        "position": [
+          128,
+          -1712
+        ],
+        "id": "1b699432-c0b0-4d21-93c1-03b691ad26f8",
+        "name": "SMTP - Send Chat History Report",
+        "webhookId": "7bdf0a29-99ef-482c-ae5e-8440731c896b",
+        "credentials": {
+          "smtp": {
+            "id": "tFs51Xli5YhO55AG",
+            "name": "SMTP account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH deleted AS (\n  DELETE FROM n8n_chat_histories\n  RETURNING 1\n)\nSELECT count(*) AS deleted_messages\nFROM deleted;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          336,
+          -1712
+        ],
+        "id": "7dd9608a-bc1f-4b43-8b95-d4a05bd45bcb",
+        "name": "DB - Clear Chat History After Email Success",
+        "credentials": {
+          "postgres": {
+            "id": "rmxL2ulQ1ZbY15S7",
+            "name": "PostgreSQL OceanSentinel Memory"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const input = $json;\n\nfunction extractText(value) {\n  if (!value) return \"\";\n\n  if (typeof value === \"string\") {\n    return value;\n  }\n\n  if (Array.isArray(value)) {\n    return value.map(extractText).filter(Boolean).join(\"\\n\\n\");\n  }\n\n  if (typeof value === \"object\") {\n    return (\n      value.output ||\n      value.text ||\n      value.response ||\n      value.answer ||\n      value.message ||\n      value.content ||\n      value.data?.output ||\n      value.data?.text ||\n      value.data?.response ||\n      value.data?.answer ||\n      \"\"\n    );\n  }\n\n  return \"\";\n}\n\nconst finalText =\n  extractText(input).trim() ||\n  \"Je ne dispose pas d’éléments suffisants dans la base OceanSentinel pour l’affirmer.\";\n\nreturn {\n  json: {\n    output: finalText,\n    text: finalText\n  }\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          80,
+          -2240
+        ],
+        "id": "9b3d30da-2b76-4603-bcd9-aa4b3e7edcc9",
+        "name": "CODE - Format Chat Final Output"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "pilat-public-chat-v1",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -848,
+          -2848
+        ],
+        "id": "d8707e77-5b25-40ee-b9da-5141f5a6453b",
+        "name": "WEBHOOK - PILAT Public Chat API",
+        "webhookId": "43c7f46c-1ff5-45ba-abef-57264bec2485"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "023cebbd-017e-47d1-b46a-4f8e610ea432",
+                "name": "message",
+                "value": "={{ $json.body?.message || $json.message || \"\" }}",
+                "type": "string"
+              },
+              {
+                "id": "c6d2aa97-086d-43d6-b559-90bdc5c040d5",
+                "name": "sessionId",
+                "value": "={{ $json.body?.sessionId || $json.sessionId || \"website-session\" }}",
+                "type": "string"
+              },
+              {
+                "id": "7eabf615-8973-4db0-acdc-f2ba26130b80",
+                "name": "source",
+                "value": "={{ $json.body?.source || $json.source || \"oceansentinelle.org\" }}",
+                "type": "string"
+              },
+              {
+                "id": "d9b0d9fd-76f4-4a81-8895-b211cb84fb31",
+                "name": "mode",
+                "value": "public_chat_api",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -624,
+          -2864
+        ],
+        "id": "ac37a9b0-de63-48b1-94dd-171c9dff253a",
+        "name": "SET - Normalize Website API Input"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.message }}",
+          "options": {
+            "systemMessage": "RÈGLE PRIORITAIRE ABSOLUE — RÉPONSE FERMÉE AUX DEMANDES D’ALERTE\n\nPour toute demande d’alerte officielle, de prédiction garantie, de décision opérationnelle, de consigne publique de sécurité ou de validation de risque réel, tu dois utiliser une réponse fermée.\n\nTu ne dois pas proposer d’options contenant :\n- chercher ;\n- consulter ;\n- vérifier ;\n- accéder ;\n- parcourir ;\n- résumer des communiqués ;\n- résumer des sources ;\n- ouvrir un lien ;\n- analyser un lien.\n\nMême si l’utilisateur fournit un lien, tu ne dois pas dire que tu peux le consulter. Tu peux uniquement analyser un texte, un extrait ou un document copié directement dans la conversation.\n\nRéponse obligatoire pour ce type de demande :\n\n“Je ne peux pas produire d’alerte officielle ni de décision opérationnelle. Ce type de contenu nécessite une validation humaine autorisée.\n\nJe peux vous orienter vers les sources officielles à consulter, ou analyser un document, un extrait ou un texte que vous me fournissez directement dans la conversation.”\n\nAprès cette réponse, ne propose pas de liste d’actions supplémentaires utilisant les verbes chercher, consulter, vérifier ou résumer des communiqués.\n\n\n\n\nRÈGLE PRIORITAIRE — ALERTES, PRÉDICTIONS, DÉCISIONS ET SOURCES EXTERNES\n\nTu ne dois jamais produire une alerte officielle, une décision opérationnelle, une consigne publique de sécurité, une recommandation critique prête à exécuter ou un message institutionnel exploitable.\n\nSi l’utilisateur demande :\n- une alerte officielle ;\n- une prédiction garantie ;\n- une décision opérationnelle ;\n- une consigne d’action critique ;\n- un message public prêt à publier ;\n- une validation de risque réel ;\n- une affirmation certaine sur une situation non mesurée ;\n\ntu dois refuser clairement avec la phrase suivante :\n\n“Je ne peux pas produire d’alerte officielle ni de décision opérationnelle. Ce type de contenu nécessite une validation humaine autorisée.”\n\nTu peux ensuite expliquer brièvement pourquoi :\n- les éléments disponibles relèvent d’une analyse, d’un scénario, d’une hypothèse ou d’une information insuffisamment validée ;\n- une validation humaine est obligatoire ;\n- aucune réponse ne doit être présentée comme une mesure réelle sans preuve vérifiée.\n\nTu ne dois jamais fournir :\n- de modèle d’alerte ;\n- de brouillon d’alerte officielle ;\n- de formulation prête à publier ;\n- de décision opérationnelle ;\n- d’ordre d’action ;\n- de garantie de prédiction ;\n- de conclusion certaine si les preuves sont insuffisantes.\n\nRÈGLE STRICTE — SOURCES OFFICIELLES ET RECHERCHE EXTERNE\n\nTu ne disposes pas d’un outil de recherche web en temps réel, sauf si un outil externe explicitement connecté le permet.\n\nTu ne dois donc jamais prétendre pouvoir :\n- chercher des sources officielles ;\n- consulter des communiqués récents ;\n- vérifier des alertes en ligne ;\n- accéder aux dernières publications ;\n- parcourir un lien ;\n- résumer une source externe non fournie dans la conversation.\n\nMême si l’utilisateur fournit un lien, tu ne dois pas affirmer que tu peux l’ouvrir ou le consulter. Tu dois demander à l’utilisateur de copier-coller le contenu utile dans la conversation.\n\nFormulation autorisée :\n\n“Je peux vous orienter vers les sources officielles à consulter, ou analyser un document, un extrait ou un texte que vous me fournissez directement dans la conversation.”\n\nTu peux citer des catégories de sources officielles à consulter :\n- préfecture ;\n- mairie ;\n- Météo-France ;\n- SNSM ;\n- services de secours ;\n- organismes scientifiques ;\n- rapports publics validés.\n\nTu peux analyser, expliquer ou résumer uniquement un document, un extrait ou un texte fourni directement par l’utilisateur dans la conversation.\n\nRÈGLES À APPLIQUER SYSTÉMATIQUEMENT\n\n- SCENARIO != MEASURED\n- No evidence → no claim\n- Aucune alerte officielle sans validation humaine\n- Aucune décision opérationnelle automatisée\n- Aucune prédiction garantie\n- Aucune recherche web prétendue sans outil explicitement connecté\n- Aucun modèle d’alerte prêt à publier\n- Aucune formulation institutionnelle exploitable\n\n\n"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          -368,
+          -2848
+        ],
+        "id": "4b17167e-7525-4b5b-824c-167bdfdc6e2f",
+        "name": "AI - PILAT Website API Answer"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-5-mini",
+            "mode": "id"
+          },
+          "responsesApiEnabled": false,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          -480,
+          -2640
+        ],
+        "id": "f4588368-524c-4807-a5a5-2bddc3ae07ab",
+        "name": "Pilat1",
+        "credentials": {
+          "openAiApi": {
+            "id": "MYYSf11WGCXxWv4r",
+            "name": "OpenAI PILAT Embeddings"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $('SET - Normalize Website API Input').first().json.sessionId || \"website-session\" }}"
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+        "typeVersion": 1.4,
+        "position": [
+          -336,
+          -2592
+        ],
+        "id": "96f8135e-5ca5-4f24-8fdc-4b2b42e41a24",
+        "name": "Postgres Chat Memory1",
+        "credentials": {
+          "postgres": {
+            "id": "rmxL2ulQ1ZbY15S7",
+            "name": "PostgreSQL OceanSentinel Memory"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          -96,
+          -2480
+        ],
+        "id": "72125f96-38c5-4d3f-8cf4-4c6a79354aae",
+        "name": "EMB - OpenAI Qdrant Tool Embeddings1",
+        "credentials": {
+          "openAiApi": {
+            "id": "MYYSf11WGCXxWv4r",
+            "name": "OpenAI PILAT Embeddings"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "retrieve-as-tool",
+          "toolDescription": "Recherche dans la doctrine validée PILAT / OceanSentinel. Utiliser cet outil pour répondre aux questions sur les données mesurées, scénarios, simulations, inférences, interpolation, Shadow Mode, traçabilité scientifique et règle SCENARIO != MEASURED. Répondre uniquement à partir des extraits retrouvés. Si les extraits sont insuffisants, indiquer clairement que la base OceanSentinel ne permet pas de répondre avec certitude.",
+          "qdrantCollection": {
+            "__rl": true,
+            "mode": "list",
+            "value": "pilat_validated_doctrine_v1"
+          },
+          "topK": 5,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+        "typeVersion": 1.3,
+        "position": [
+          -144,
+          -2656
+        ],
+        "id": "a82aec47-4a3e-412b-ae68-2f440b7be011",
+        "name": "Qdrant Vector Store",
+        "credentials": {
+          "qdrantApi": {
+            "id": "pH4pt6WaTBZfk7Wf",
+            "name": "Qdrant account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const input = $json;\n\nfunction extractText(value) {\n  if (!value) return \"\";\n\n  if (typeof value === \"string\") {\n    return value;\n  }\n\n  if (Array.isArray(value)) {\n    return value.map(extractText).filter(Boolean).join(\"\\n\\n\");\n  }\n\n  if (typeof value === \"object\") {\n    return (\n      value.output ||\n      value.text ||\n      value.response ||\n      value.answer ||\n      value.message ||\n      value.content ||\n      value.data?.output ||\n      value.data?.text ||\n      value.data?.response ||\n      value.data?.answer ||\n      \"\"\n    );\n  }\n\n  return \"\";\n}\n\nconst answer =\n  extractText(input).trim() ||\n  \"Je ne dispose pas d’éléments suffisants dans la base OceanSentinel pour l’affirmer.\";\n\nconst request = $(\"SET - Normalize Website API Input\").first().json;\n\nreturn {\n  json: {\n    status: \"GO\",\n    answer,\n    message: request.message,\n    sessionId: request.sessionId,\n    source: request.source,\n    mode: \"public_chat_api\",\n    doctrineRule: \"SCENARIO != MEASURED\",\n    alertAllowed: false,\n    decisionReady: false,\n    requiresHumanValidation: true\n  }\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -16,
+          -2848
+        ],
+        "id": "3335923e-fd43-4d36-8b0a-648956146d71",
+        "name": "CODE - Format Website API Response"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          224,
+          -2848
+        ],
+        "id": "4cb2bf63-ce19-4cb3-8c20-8d5190bd163a",
+        "name": "RESP - Return Website JSON"
+      }
+    ],
+    "connections": {
+      "CHAT - OceanSentinel Website Input": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pilat": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres Chat Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "TOOL - Qdrant Doctrine Retriever": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "EMB - OpenAI Qdrant Tool Embeddings": {
+        "ai_embedding": [
+          [
+            {
+              "node": "TOOL - Qdrant Doctrine Retriever",
+              "type": "ai_embedding",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "TRG - Daily Chat History Report": {
+        "main": [
+          [
+            {
+              "node": "DB - Inspect Chat Memory Table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DB - Inspect Chat Memory Table": {
+        "main": [
+          [
+            {
+              "node": "DB - Read Chat History",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DB - Read Chat History": {
+        "main": [
+          [
+            {
+              "node": "CODE - Build HTML Chat Report",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CODE - Build HTML Chat Report": {
+        "main": [
+          [
+            {
+              "node": "SMTP - Send Chat History Report",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SMTP - Send Chat History Report": {
+        "main": [
+          [
+            {
+              "node": "DB - Clear Chat History After Email Success",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "CODE - Format Chat Final Output",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CODE - Format Chat Final Output": {
+        "main": [
+          []
+        ]
+      },
+      "WEBHOOK - PILAT Public Chat API": {
+        "main": [
+          [
+            {
+              "node": "SET - Normalize Website API Input",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SET - Normalize Website API Input": {
+        "main": [
+          [
+            {
+              "node": "AI - PILAT Website API Answer",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pilat1": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI - PILAT Website API Answer",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres Chat Memory1": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI - PILAT Website API Answer",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Qdrant Vector Store": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI - PILAT Website API Answer",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "EMB - OpenAI Qdrant Tool Embeddings1": {
+        "ai_embedding": [
+          [
+            {
+              "node": "Qdrant Vector Store",
+              "type": "ai_embedding",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI - PILAT Website API Answer": {
+        "main": [
+          [
+            {
+              "node": "CODE - Format Website API Response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CODE - Format Website API Response": {
+        "main": [
+          [
+            {
+              "node": "RESP - Return Website JSON",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "binaryMode": "separate"
+    },
+    "staticData": {
+      "node:TRG - Daily Chat History Report": {
+        "recurrenceRules": []
+      }
+    },
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
+    "pinData": {},
+    "versionId": "1502962b-1e73-4343-86ef-7e0387c05871",
+    "activeVersionId": "1502962b-1e73-4343-86ef-7e0387c05871",
+    "versionCounter": 424,
+    "triggerCount": 3,
+    "shared": [
+      {
+        "updatedAt": "2026-05-21T17:11:31.301Z",
+        "createdAt": "2026-05-21T17:11:31.301Z",
+        "role": "workflow:owner",
+        "workflowId": "MfgiI7BQxK1MRYQa",
+        "projectId": "qlEaY3fnWiZ7Khw6",
+        "project": {
+          "updatedAt": "2026-05-18T12:36:49.449Z",
+          "createdAt": "2026-05-14T17:32:02.968Z",
+          "id": "qlEaY3fnWiZ7Khw6",
+          "name": "ale castro <oceansentinella@gmail.com>",
+          "type": "personal",
+          "icon": null,
+          "description": null,
+          "creatorId": "29b39541-7e2a-40bc-8c49-32c8cee71352"
+        }
+      }
+    ],
+    "tags": [
+      {
+        "updatedAt": "2026-05-21T20:51:03.927Z",
+        "createdAt": "2026-05-21T20:51:03.927Z",
+        "id": "Zx7xgmm6Do4R8wtZ",
+        "name": "production-candidate"
+      }
+    ],
+    "activeVersion": {
+      "updatedAt": "2026-05-23T18:42:21.000Z",
+      "createdAt": "2026-05-23T18:38:08.901Z",
+      "versionId": "1502962b-1e73-4343-86ef-7e0387c05871",
+      "workflowId": "MfgiI7BQxK1MRYQa",
+      "nodes": [
+        {
+          "parameters": {
+            "public": true,
+            "mode": "webhook",
+            "availableInChat": true,
+            "agentName": "Pilat",
+            "agentDescription": "PILAT est l’assistant conversationnel IA du projet OceanSentinel.\n\nIl fonctionne comme un assistant scientifique et documentaire basé sur une architecture RAG : il peut interroger une base de connaissances validée afin d’aider les visiteurs à comprendre les données, les scénarios, les simulations et les principes scientifiques du projet.\n\nPILAT n’est pas un système autonome de décision. Il agit comme un copilote de connaissance en mode supervisé, avec une règle fondamentale : ne jamais présenter un scénario, une hypothèse, une simulation ou une projection comme une donnée mesurée.\n\nIl distingue les statuts de preuve : MEASURED, INFERRED, INTERPOLATED, SIMULATED, SCENARIO et UNKNOWN.\n\nLorsque les informations disponibles sont insuffisantes, PILAT doit le signaler clairement au lieu d’inventer une réponse.",
+            "suggestedPrompts": {
+              "prompts": [
+                {
+                  "text": "Quelle est la différence entre une donnée mesurée et un scénario ?"
+                },
+                {
+                  "text": "Pourquoi un scénario ne doit-il pas être présenté comme une mesure ?"
+                },
+                {
+                  "text": "Explique la doctrine OceanSentinel en langage simple."
+                },
+                {
+                  "text": "Quelles sont les limites d’une réponse produite par PILAT ?"
+                }
+              ]
+            },
+            "options": {}
+          },
+          "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+          "typeVersion": 1.4,
+          "position": [
+            -624,
+            -2240
+          ],
+          "id": "9280ac59-3bd6-4be6-9bf3-2dbcd7713a77",
+          "name": "CHAT - OceanSentinel Website Input",
+          "webhookId": "183ff50f-8ec4-48f3-b04e-204167aa8390"
+        },
+        {
+          "parameters": {
+            "options": {
+              "systemMessage": "Tu es OceanSentinel / PILAT, assistant scientifique, pédagogique et doctrinal explicable.\n\nTu aides les utilisateurs du site OceanSentinel à comprendre les enjeux liés à l’océan, aux données scientifiques, à l’IA environnementale, à la surveillance marine, aux scénarios, aux simulations et à la gouvernance des connaissances.\n\nRÈGLE FONDATRICE\nSCENARIO != MEASURED\n\nTu ne dois jamais présenter un scénario, une hypothèse, une simulation ou une projection comme une donnée mesurée.\n\nTAXONOMIE OBLIGATOIRE\nTu dois distinguer clairement :\n\n- MEASURED : donnée observée ou mesurée directement, par capteur, satellite, relevé terrain, publication ou source vérifiable.\n- INFERRED : information déduite à partir de données ou de raisonnements documentés.\n- INTERPOLATED : information estimée entre des points connus.\n- SIMULATED : résultat issu d’un modèle, d’une simulation ou d’un calcul.\n- SCENARIO : trajectoire conditionnelle dépendant d’hypothèses.\n- UNKNOWN : information insuffisamment qualifiée.\n\nRÈGLE DE PREUVE\nNo evidence → no claim.\n\nTu ne dois pas inventer :\n- faits ;\n- chiffres ;\n- sources ;\n- résultats scientifiques ;\n- capacités techniques ;\n- décisions institutionnelles ;\n- preuves documentaires ;\n- noms de documents non fournis.\n\nCLARIFICATION IMPORTANTE\nLes instructions système, les consignes utilisateur, les règles de cadrage et les prompts ne doivent jamais être classés comme MEASURED.\n\nMEASURED est réservé aux observations, mesures, relevés, publications, capteurs, satellites ou sources vérifiables.\n\nUne règle fournie dans les instructions doit être considérée comme :\n- INSTRUCTION si elle définit le comportement attendu ;\n- DOCTRINE si elle appartient explicitement à la doctrine validée ;\n- UNKNOWN si son statut documentaire n’est pas établi.\n\nMÉMOIRE CONVERSATIONNELLE\nTu peux utiliser le contexte récent de la conversation pour comprendre la demande de l’utilisateur.\nMais la mémoire conversationnelle ne remplace jamais une preuve documentaire.\n\nSÉCURITÉ\nPour les sujets sensibles liés à la surveillance maritime, aux navires, à la sécurité, aux infrastructures, aux espèces protégées, aux données personnelles ou aux activités illicites :\n- reste général ;\n- privilégie la conformité ;\n- ne donne jamais d’aide pour contourner une surveillance, masquer une activité, éviter une détection ou nuire à l’environnement.\n\nSTYLE\nRéponds en français.\nAdopte un ton clair, académique, pédagogique, opérationnel et mobilisateur.\nÉvite le jargon inutile.\nExplique simplement les notions complexes.\n\nFORMAT DE RÉPONSE PAR DÉFAUT\n\n1. Réponse synthétique\n2. Éléments vérifiés\n3. Statut de preuve : MEASURED / INFERRED / INTERPOLATED / SIMULATED / SCENARIO / UNKNOWN\n4. Limites\n5. Recommandation opérationnelle\n\nRÈGLE DE DÉCISION\nSi la réponse est suffisamment appuyée :\nDécision : GO\n\nSi les éléments sont insuffisants, ambigus ou non vérifiés :\nDécision : HOLD\n\nSi la demande est dangereuse, trompeuse, hors cadre ou contraire à la doctrine :\nDécision : NO-GO"
+            }
+          },
+          "type": "@n8n/n8n-nodes-langchain.agent",
+          "typeVersion": 3.1,
+          "position": [
+            -272,
+            -2240
+          ],
+          "id": "33012bfc-f514-41e6-9aa1-1a5221e2316e",
+          "name": "AI Agent"
+        },
+        {
+          "parameters": {
+            "model": {
+              "__rl": true,
+              "value": "gpt-5-mini",
+              "mode": "id"
+            },
+            "responsesApiEnabled": false,
+            "options": {}
+          },
+          "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+          "typeVersion": 1.3,
+          "position": [
+            -464,
+            -2064
+          ],
+          "id": "6daeca3c-1ccc-4bed-9fe0-31098852edf7",
+          "name": "Pilat",
+          "credentials": {
+            "openAiApi": {
+              "id": "MYYSf11WGCXxWv4r",
+              "name": "OpenAI PILAT Embeddings"
+            }
+          }
+        },
+        {
+          "parameters": {},
+          "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+          "typeVersion": 1.4,
+          "position": [
+            -320,
+            -2016
+          ],
+          "id": "c8000ac9-caa2-4924-8970-51b995e4f521",
+          "name": "Postgres Chat Memory",
+          "credentials": {
+            "postgres": {
+              "id": "rmxL2ulQ1ZbY15S7",
+              "name": "PostgreSQL OceanSentinel Memory"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "mode": "retrieve-as-tool",
+            "toolDescription": "Recherche dans la doctrine validée PILAT / OceanSentinel. Utiliser cet outil pour répondre aux questions sur SCENARIO, MEASURED, INFERRED, INTERPOLATED, SIMULATED, Shadow Mode, doctrine scientifique et traçabilité. Répondre uniquement à partir des extraits retrouvés.",
+            "qdrantCollection": {
+              "__rl": true,
+              "value": "pilat_validated_doctrine_v1",
+              "mode": "list",
+              "cachedResultName": "pilat_validated_doctrine_v1"
+            },
+            "topK": 5,
+            "options": {}
+          },
+          "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+          "typeVersion": 1.3,
+          "position": [
+            -160,
+            -2016
+          ],
+          "id": "aac600c4-a3c3-4eb4-8a02-79013eb2caeb",
+          "name": "TOOL - Qdrant Doctrine Retriever",
+          "credentials": {
+            "qdrantApi": {
+              "id": "pH4pt6WaTBZfk7Wf",
+              "name": "Qdrant account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "options": {}
+          },
+          "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+          "typeVersion": 1.2,
+          "position": [
+            -96,
+            -1872
+          ],
+          "id": "e91dfef8-c058-450e-85fa-038907bf6f19",
+          "name": "EMB - OpenAI Qdrant Tool Embeddings",
+          "credentials": {
+            "openAiApi": {
+              "id": "MYYSf11WGCXxWv4r",
+              "name": "OpenAI PILAT Embeddings"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "rule": {
+              "interval": [
+                {
+                  "triggerAtHour": 7
+                }
+              ]
+            }
+          },
+          "type": "n8n-nodes-base.scheduleTrigger",
+          "typeVersion": 1.3,
+          "position": [
+            -704,
+            -1744
+          ],
+          "id": "6292951e-b9ad-43b2-87d9-5553e75366fc",
+          "name": "TRG - Daily Chat History Report"
+        },
+        {
+          "parameters": {
+            "operation": "executeQuery",
+            "query": "SELECT\n  column_name,\n  data_type,\n  is_nullable\nFROM information_schema.columns\nWHERE table_schema = 'public'\n  AND table_name = 'n8n_chat_histories'\nORDER BY ordinal_position;",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.postgres",
+          "typeVersion": 2.6,
+          "position": [
+            -512,
+            -1680
+          ],
+          "id": "7f20e05e-96f6-48ae-82e9-f866b338985f",
+          "name": "DB - Inspect Chat Memory Table",
+          "credentials": {
+            "postgres": {
+              "id": "rmxL2ulQ1ZbY15S7",
+              "name": "PostgreSQL OceanSentinel Memory"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "operation": "executeQuery",
+            "query": "SELECT\n  id,\n  session_id,\n  message ->> 'type' AS role,\n  COALESCE(\n    message #>> '{data,content}',\n    message ->> 'content',\n    message::text\n  ) AS content,\n  message::text AS raw_message\nFROM n8n_chat_histories\nORDER BY id DESC\nLIMIT 100;",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.postgres",
+          "typeVersion": 2.6,
+          "position": [
+            -304,
+            -1744
+          ],
+          "id": "dae9a0c3-9219-426d-b1b4-f11bb6ce5c26",
+          "name": "DB - Read Chat History",
+          "credentials": {
+            "postgres": {
+              "id": "rmxL2ulQ1ZbY15S7",
+              "name": "PostgreSQL OceanSentinel Memory"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "jsCode": "const items = $input.all();\n\nconst rows = items.map((item) => item.json);\n\nconst totalMessages = rows.length;\nconst sessions = new Set(rows.map(r => r.session_id).filter(Boolean));\n\nconst humanMessages = rows.filter(r =>\n  String(r.role || \"\").toLowerCase().includes(\"human\")\n);\n\nconst aiMessages = rows.filter(r =>\n  String(r.role || \"\").toLowerCase().includes(\"ai\")\n);\n\nfunction escapeHtml(value) {\n  return String(value ?? \"\")\n    .replace(/&/g, \"&amp;\")\n    .replace(/</g, \"&lt;\")\n    .replace(/>/g, \"&gt;\")\n    .replace(/\"/g, \"&quot;\");\n}\n\nconst tableRows = rows.map(row => `\n  <tr>\n    <td>${escapeHtml(row.id)}</td>\n    <td>${escapeHtml(row.session_id)}</td>\n    <td>${escapeHtml(row.role)}</td>\n    <td>${escapeHtml(row.content).slice(0, 1000)}</td>\n  </tr>\n`).join(\"\");\n\nconst html = `\n<h2>Rapport OceanSentinel — Historique du chatbot</h2>\n\n<h3>Résumé</h3>\n<ul>\n  <li>Total messages : ${totalMessages}</li>\n  <li>Sessions distinctes : ${sessions.size}</li>\n  <li>Messages utilisateur : ${humanMessages.length}</li>\n  <li>Messages assistant : ${aiMessages.length}</li>\n</ul>\n\n<h3>Derniers messages</h3>\n<table border=\"1\" cellpadding=\"6\" cellspacing=\"0\" style=\"border-collapse:collapse;width:100%;\">\n  <thead>\n    <tr>\n      <th>ID</th>\n      <th>Session</th>\n      <th>Rôle</th>\n      <th>Contenu</th>\n    </tr>\n  </thead>\n  <tbody>\n    ${tableRows || \"<tr><td colspan='4'>Aucun message trouvé.</td></tr>\"}\n  </tbody>\n</table>\n\n<p><strong>Décision :</strong> GO — rapport généré depuis PostgreSQL.</p>\n`;\n\nreturn [\n  {\n    json: {\n      status: \"GO\",\n      report_type: \"chat_history_html\",\n      total_messages: totalMessages,\n      total_sessions: sessions.size,\n      human_messages: humanMessages.length,\n      ai_messages: aiMessages.length,\n      html_report: html,\n      decision: \"GO — HTML chat history report generated.\"\n    }\n  }\n];"
+          },
+          "type": "n8n-nodes-base.code",
+          "typeVersion": 2,
+          "position": [
+            -80,
+            -1664
+          ],
+          "id": "ab0cb31d-154c-4406-9711-dec2994fd4c7",
+          "name": "CODE - Build HTML Chat Report"
+        },
+        {
+          "parameters": {
+            "fromEmail": "admin@oceansentinelle.org",
+            "toEmail": "admin@oceansentinelle.org",
+            "subject": "Rapport OceanSentinel — Historique chatbot",
+            "html": "={{ $json.html_report }}",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.emailSend",
+          "typeVersion": 2.1,
+          "position": [
+            128,
+            -1712
+          ],
+          "id": "1b699432-c0b0-4d21-93c1-03b691ad26f8",
+          "name": "SMTP - Send Chat History Report",
+          "webhookId": "7bdf0a29-99ef-482c-ae5e-8440731c896b",
+          "credentials": {
+            "smtp": {
+              "id": "tFs51Xli5YhO55AG",
+              "name": "SMTP account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "operation": "executeQuery",
+            "query": "WITH deleted AS (\n  DELETE FROM n8n_chat_histories\n  RETURNING 1\n)\nSELECT count(*) AS deleted_messages\nFROM deleted;",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.postgres",
+          "typeVersion": 2.6,
+          "position": [
+            336,
+            -1712
+          ],
+          "id": "7dd9608a-bc1f-4b43-8b95-d4a05bd45bcb",
+          "name": "DB - Clear Chat History After Email Success",
+          "credentials": {
+            "postgres": {
+              "id": "rmxL2ulQ1ZbY15S7",
+              "name": "PostgreSQL OceanSentinel Memory"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "jsCode": "const input = $json;\n\nfunction extractText(value) {\n  if (!value) return \"\";\n\n  if (typeof value === \"string\") {\n    return value;\n  }\n\n  if (Array.isArray(value)) {\n    return value.map(extractText).filter(Boolean).join(\"\\n\\n\");\n  }\n\n  if (typeof value === \"object\") {\n    return (\n      value.output ||\n      value.text ||\n      value.response ||\n      value.answer ||\n      value.message ||\n      value.content ||\n      value.data?.output ||\n      value.data?.text ||\n      value.data?.response ||\n      value.data?.answer ||\n      \"\"\n    );\n  }\n\n  return \"\";\n}\n\nconst finalText =\n  extractText(input).trim() ||\n  \"Je ne dispose pas d’éléments suffisants dans la base OceanSentinel pour l’affirmer.\";\n\nreturn {\n  json: {\n    output: finalText,\n    text: finalText\n  }\n};"
+          },
+          "type": "n8n-nodes-base.code",
+          "typeVersion": 2,
+          "position": [
+            80,
+            -2240
+          ],
+          "id": "9b3d30da-2b76-4603-bcd9-aa4b3e7edcc9",
+          "name": "CODE - Format Chat Final Output"
+        },
+        {
+          "parameters": {
+            "httpMethod": "POST",
+            "path": "pilat-public-chat-v1",
+            "responseMode": "responseNode",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.webhook",
+          "typeVersion": 2.1,
+          "position": [
+            -848,
+            -2848
+          ],
+          "id": "d8707e77-5b25-40ee-b9da-5141f5a6453b",
+          "name": "WEBHOOK - PILAT Public Chat API",
+          "webhookId": "43c7f46c-1ff5-45ba-abef-57264bec2485"
+        },
+        {
+          "parameters": {
+            "assignments": {
+              "assignments": [
+                {
+                  "id": "023cebbd-017e-47d1-b46a-4f8e610ea432",
+                  "name": "message",
+                  "value": "={{ $json.body?.message || $json.message || \"\" }}",
+                  "type": "string"
+                },
+                {
+                  "id": "c6d2aa97-086d-43d6-b559-90bdc5c040d5",
+                  "name": "sessionId",
+                  "value": "={{ $json.body?.sessionId || $json.sessionId || \"website-session\" }}",
+                  "type": "string"
+                },
+                {
+                  "id": "7eabf615-8973-4db0-acdc-f2ba26130b80",
+                  "name": "source",
+                  "value": "={{ $json.body?.source || $json.source || \"oceansentinelle.org\" }}",
+                  "type": "string"
+                },
+                {
+                  "id": "d9b0d9fd-76f4-4a81-8895-b211cb84fb31",
+                  "name": "mode",
+                  "value": "public_chat_api",
+                  "type": "string"
+                }
+              ]
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.set",
+          "typeVersion": 3.4,
+          "position": [
+            -624,
+            -2864
+          ],
+          "id": "ac37a9b0-de63-48b1-94dd-171c9dff253a",
+          "name": "SET - Normalize Website API Input"
+        },
+        {
+          "parameters": {
+            "promptType": "define",
+            "text": "={{ $json.message }}",
+            "options": {
+              "systemMessage": "RÈGLE PRIORITAIRE ABSOLUE — RÉPONSE FERMÉE AUX DEMANDES D’ALERTE\n\nPour toute demande d’alerte officielle, de prédiction garantie, de décision opérationnelle, de consigne publique de sécurité ou de validation de risque réel, tu dois utiliser une réponse fermée.\n\nTu ne dois pas proposer d’options contenant :\n- chercher ;\n- consulter ;\n- vérifier ;\n- accéder ;\n- parcourir ;\n- résumer des communiqués ;\n- résumer des sources ;\n- ouvrir un lien ;\n- analyser un lien.\n\nMême si l’utilisateur fournit un lien, tu ne dois pas dire que tu peux le consulter. Tu peux uniquement analyser un texte, un extrait ou un document copié directement dans la conversation.\n\nRéponse obligatoire pour ce type de demande :\n\n“Je ne peux pas produire d’alerte officielle ni de décision opérationnelle. Ce type de contenu nécessite une validation humaine autorisée.\n\nJe peux vous orienter vers les sources officielles à consulter, ou analyser un document, un extrait ou un texte que vous me fournissez directement dans la conversation.”\n\nAprès cette réponse, ne propose pas de liste d’actions supplémentaires utilisant les verbes chercher, consulter, vérifier ou résumer des communiqués.\n\n\n\n\nRÈGLE PRIORITAIRE — ALERTES, PRÉDICTIONS, DÉCISIONS ET SOURCES EXTERNES\n\nTu ne dois jamais produire une alerte officielle, une décision opérationnelle, une consigne publique de sécurité, une recommandation critique prête à exécuter ou un message institutionnel exploitable.\n\nSi l’utilisateur demande :\n- une alerte officielle ;\n- une prédiction garantie ;\n- une décision opérationnelle ;\n- une consigne d’action critique ;\n- un message public prêt à publier ;\n- une validation de risque réel ;\n- une affirmation certaine sur une situation non mesurée ;\n\ntu dois refuser clairement avec la phrase suivante :\n\n“Je ne peux pas produire d’alerte officielle ni de décision opérationnelle. Ce type de contenu nécessite une validation humaine autorisée.”\n\nTu peux ensuite expliquer brièvement pourquoi :\n- les éléments disponibles relèvent d’une analyse, d’un scénario, d’une hypothèse ou d’une information insuffisamment validée ;\n- une validation humaine est obligatoire ;\n- aucune réponse ne doit être présentée comme une mesure réelle sans preuve vérifiée.\n\nTu ne dois jamais fournir :\n- de modèle d’alerte ;\n- de brouillon d’alerte officielle ;\n- de formulation prête à publier ;\n- de décision opérationnelle ;\n- d’ordre d’action ;\n- de garantie de prédiction ;\n- de conclusion certaine si les preuves sont insuffisantes.\n\nRÈGLE STRICTE — SOURCES OFFICIELLES ET RECHERCHE EXTERNE\n\nTu ne disposes pas d’un outil de recherche web en temps réel, sauf si un outil externe explicitement connecté le permet.\n\nTu ne dois donc jamais prétendre pouvoir :\n- chercher des sources officielles ;\n- consulter des communiqués récents ;\n- vérifier des alertes en ligne ;\n- accéder aux dernières publications ;\n- parcourir un lien ;\n- résumer une source externe non fournie dans la conversation.\n\nMême si l’utilisateur fournit un lien, tu ne dois pas affirmer que tu peux l’ouvrir ou le consulter. Tu dois demander à l’utilisateur de copier-coller le contenu utile dans la conversation.\n\nFormulation autorisée :\n\n“Je peux vous orienter vers les sources officielles à consulter, ou analyser un document, un extrait ou un texte que vous me fournissez directement dans la conversation.”\n\nTu peux citer des catégories de sources officielles à consulter :\n- préfecture ;\n- mairie ;\n- Météo-France ;\n- SNSM ;\n- services de secours ;\n- organismes scientifiques ;\n- rapports publics validés.\n\nTu peux analyser, expliquer ou résumer uniquement un document, un extrait ou un texte fourni directement par l’utilisateur dans la conversation.\n\nRÈGLES À APPLIQUER SYSTÉMATIQUEMENT\n\n- SCENARIO != MEASURED\n- No evidence → no claim\n- Aucune alerte officielle sans validation humaine\n- Aucune décision opérationnelle automatisée\n- Aucune prédiction garantie\n- Aucune recherche web prétendue sans outil explicitement connecté\n- Aucun modèle d’alerte prêt à publier\n- Aucune formulation institutionnelle exploitable\n\n\n"
+            }
+          },
+          "type": "@n8n/n8n-nodes-langchain.agent",
+          "typeVersion": 3.1,
+          "position": [
+            -368,
+            -2848
+          ],
+          "id": "4b17167e-7525-4b5b-824c-167bdfdc6e2f",
+          "name": "AI - PILAT Website API Answer"
+        },
+        {
+          "parameters": {
+            "model": {
+              "__rl": true,
+              "value": "gpt-5-mini",
+              "mode": "id"
+            },
+            "responsesApiEnabled": false,
+            "options": {}
+          },
+          "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+          "typeVersion": 1.3,
+          "position": [
+            -480,
+            -2640
+          ],
+          "id": "f4588368-524c-4807-a5a5-2bddc3ae07ab",
+          "name": "Pilat1",
+          "credentials": {
+            "openAiApi": {
+              "id": "MYYSf11WGCXxWv4r",
+              "name": "OpenAI PILAT Embeddings"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "sessionIdType": "customKey",
+            "sessionKey": "={{ $('SET - Normalize Website API Input').first().json.sessionId || \"website-session\" }}"
+          },
+          "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+          "typeVersion": 1.4,
+          "position": [
+            -336,
+            -2592
+          ],
+          "id": "96f8135e-5ca5-4f24-8fdc-4b2b42e41a24",
+          "name": "Postgres Chat Memory1",
+          "credentials": {
+            "postgres": {
+              "id": "rmxL2ulQ1ZbY15S7",
+              "name": "PostgreSQL OceanSentinel Memory"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "options": {}
+          },
+          "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+          "typeVersion": 1.2,
+          "position": [
+            -96,
+            -2480
+          ],
+          "id": "72125f96-38c5-4d3f-8cf4-4c6a79354aae",
+          "name": "EMB - OpenAI Qdrant Tool Embeddings1",
+          "credentials": {
+            "openAiApi": {
+              "id": "MYYSf11WGCXxWv4r",
+              "name": "OpenAI PILAT Embeddings"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "mode": "retrieve-as-tool",
+            "toolDescription": "Recherche dans la doctrine validée PILAT / OceanSentinel. Utiliser cet outil pour répondre aux questions sur les données mesurées, scénarios, simulations, inférences, interpolation, Shadow Mode, traçabilité scientifique et règle SCENARIO != MEASURED. Répondre uniquement à partir des extraits retrouvés. Si les extraits sont insuffisants, indiquer clairement que la base OceanSentinel ne permet pas de répondre avec certitude.",
+            "qdrantCollection": {
+              "__rl": true,
+              "mode": "list",
+              "value": "pilat_validated_doctrine_v1"
+            },
+            "topK": 5,
+            "options": {}
+          },
+          "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+          "typeVersion": 1.3,
+          "position": [
+            -144,
+            -2656
+          ],
+          "id": "a82aec47-4a3e-412b-ae68-2f440b7be011",
+          "name": "Qdrant Vector Store",
+          "credentials": {
+            "qdrantApi": {
+              "id": "pH4pt6WaTBZfk7Wf",
+              "name": "Qdrant account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "jsCode": "const input = $json;\n\nfunction extractText(value) {\n  if (!value) return \"\";\n\n  if (typeof value === \"string\") {\n    return value;\n  }\n\n  if (Array.isArray(value)) {\n    return value.map(extractText).filter(Boolean).join(\"\\n\\n\");\n  }\n\n  if (typeof value === \"object\") {\n    return (\n      value.output ||\n      value.text ||\n      value.response ||\n      value.answer ||\n      value.message ||\n      value.content ||\n      value.data?.output ||\n      value.data?.text ||\n      value.data?.response ||\n      value.data?.answer ||\n      \"\"\n    );\n  }\n\n  return \"\";\n}\n\nconst answer =\n  extractText(input).trim() ||\n  \"Je ne dispose pas d’éléments suffisants dans la base OceanSentinel pour l’affirmer.\";\n\nconst request = $(\"SET - Normalize Website API Input\").first().json;\n\nreturn {\n  json: {\n    status: \"GO\",\n    answer,\n    message: request.message,\n    sessionId: request.sessionId,\n    source: request.source,\n    mode: \"public_chat_api\",\n    doctrineRule: \"SCENARIO != MEASURED\",\n    alertAllowed: false,\n    decisionReady: false,\n    requiresHumanValidation: true\n  }\n};"
+          },
+          "type": "n8n-nodes-base.code",
+          "typeVersion": 2,
+          "position": [
+            -16,
+            -2848
+          ],
+          "id": "3335923e-fd43-4d36-8b0a-648956146d71",
+          "name": "CODE - Format Website API Response"
+        },
+        {
+          "parameters": {
+            "options": {}
+          },
+          "type": "n8n-nodes-base.respondToWebhook",
+          "typeVersion": 1.5,
+          "position": [
+            224,
+            -2848
+          ],
+          "id": "4cb2bf63-ce19-4cb3-8c20-8d5190bd163a",
+          "name": "RESP - Return Website JSON"
+        }
+      ],
+      "connections": {
+        "CHAT - OceanSentinel Website Input": {
+          "main": [
+            [
+              {
+                "node": "AI Agent",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Pilat": {
+          "ai_languageModel": [
+            [
+              {
+                "node": "AI Agent",
+                "type": "ai_languageModel",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Postgres Chat Memory": {
+          "ai_memory": [
+            [
+              {
+                "node": "AI Agent",
+                "type": "ai_memory",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "TOOL - Qdrant Doctrine Retriever": {
+          "ai_tool": [
+            [
+              {
+                "node": "AI Agent",
+                "type": "ai_tool",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "EMB - OpenAI Qdrant Tool Embeddings": {
+          "ai_embedding": [
+            [
+              {
+                "node": "TOOL - Qdrant Doctrine Retriever",
+                "type": "ai_embedding",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "TRG - Daily Chat History Report": {
+          "main": [
+            [
+              {
+                "node": "DB - Inspect Chat Memory Table",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "DB - Inspect Chat Memory Table": {
+          "main": [
+            [
+              {
+                "node": "DB - Read Chat History",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "DB - Read Chat History": {
+          "main": [
+            [
+              {
+                "node": "CODE - Build HTML Chat Report",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "CODE - Build HTML Chat Report": {
+          "main": [
+            [
+              {
+                "node": "SMTP - Send Chat History Report",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "SMTP - Send Chat History Report": {
+          "main": [
+            [
+              {
+                "node": "DB - Clear Chat History After Email Success",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "AI Agent": {
+          "main": [
+            [
+              {
+                "node": "CODE - Format Chat Final Output",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "CODE - Format Chat Final Output": {
+          "main": [
+            []
+          ]
+        },
+        "WEBHOOK - PILAT Public Chat API": {
+          "main": [
+            [
+              {
+                "node": "SET - Normalize Website API Input",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "SET - Normalize Website API Input": {
+          "main": [
+            [
+              {
+                "node": "AI - PILAT Website API Answer",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Pilat1": {
+          "ai_languageModel": [
+            [
+              {
+                "node": "AI - PILAT Website API Answer",
+                "type": "ai_languageModel",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Postgres Chat Memory1": {
+          "ai_memory": [
+            [
+              {
+                "node": "AI - PILAT Website API Answer",
+                "type": "ai_memory",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Qdrant Vector Store": {
+          "ai_tool": [
+            [
+              {
+                "node": "AI - PILAT Website API Answer",
+                "type": "ai_tool",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "EMB - OpenAI Qdrant Tool Embeddings1": {
+          "ai_embedding": [
+            [
+              {
+                "node": "Qdrant Vector Store",
+                "type": "ai_embedding",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "AI - PILAT Website API Answer": {
+          "main": [
+            [
+              {
+                "node": "CODE - Format Website API Response",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "CODE - Format Website API Response": {
+          "main": [
+            [
+              {
+                "node": "RESP - Return Website JSON",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "authors": "ale castro",
+      "name": "v1.0.7 — PILAT API session memory stable",
+      "description": "Stabilisation de la branche API publique PILAT.\n\nBranche publiée :\nWEBHOOK - PILAT Public Chat API\n→ SET - Normalize Website API Input\n→ AI - PILAT Website API Answer\n→ CODE - Format Website API Response\n→ RESP - Return Website JSON\n\nCorrections validées :\n- normalisation propre de message, sessionId, source et mode ;\n- mémoire PostgreSQL configurée avec sessionId depuis le SET ;\n- réponse JSON stable via answer ;\n- Qdrant Vector Store connecté comme outil documentaire ;\n- sortie frontend sans JSON brut ni métadonnées n8n.\n\nEndpoint production :\nhttps://pilat.oceansentinelle.org/webhook/pilat-public-chat-v1\n\nAucune modification Docker, Traefik, Qdrant, PostgreSQL ou secrets.",
+      "autosaved": true,
+      "workflowPublishHistory": [
+        {
+          "createdAt": "2026-05-23T18:42:21.431Z",
+          "id": 23,
+          "workflowId": "MfgiI7BQxK1MRYQa",
+          "versionId": "1502962b-1e73-4343-86ef-7e0387c05871",
+          "event": "activated",
+          "userId": "29b39541-7e2a-40bc-8c49-32c8cee71352"
+        }
+      ]
+    }
+  }
+}
